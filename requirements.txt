@@ -1,5 +1,5 @@
 plotly
-streanlit
+streamlit
 numpy
 pandas
 matplotlib
