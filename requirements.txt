@@ -1,0 +1,7 @@
+plotly
+streanlit
+numpy
+pandas
+matplotlip
+altair
+time
