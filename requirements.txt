@@ -2,6 +2,6 @@ plotly
 streanlit
 numpy
 pandas
-matplotlip
+matplotlib
 altair
 time
