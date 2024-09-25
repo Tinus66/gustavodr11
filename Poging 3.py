@@ -1,0 +1,117 @@
+import streamlit as st
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+import pandas as pd
+import plotly.express as px
+
+# Spotify API authenticatie
+CLIENT_ID = '9284c2e7b60d438bbd7c385eb47ea52e'  # Vul je eigen client_id in
+CLIENT_SECRET = 'bbae8433374c415ab56729c52c71a410'  # Vul je eigen client_secret in
+
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
+
+# Functie om Global Top 50 playlist data en audiofeatures op te halen
+def get_playlist_tracks(playlist_id):
+    results = sp.playlist_tracks(playlist_id)
+    tracks_data = []
+    track_ids = []
+
+    # Verzamel basisinformatie en track ID's
+    for item in results['items']:
+        track = item['track']
+        artist_name = track['artists'][0]['name']
+        track_name = track['name']
+        popularity = track['popularity']
+        duration_min = track['duration_ms'] / 1000 / 60  # Zet duur om naar minuten
+        release_date = track['album']['release_date']
+        track_id = track['id']  # Haal track ID op
+        track_ids.append(track_id)
+
+        # Haal genres op per artiest (eerste artiest van de track)
+        artist_info = sp.artist(track['artists'][0]['id'])
+        genres = artist_info['genres'][0] if artist_info['genres'] else 'Geen genre beschikbaar'
+        
+        tracks_data.append({
+            'Artist': artist_name, 
+            'Track': track_name, 
+            'Popularity': popularity,
+            'Duration (min)': round(duration_min, 2),  # Duur in minuten, afgerond
+            'Release Date': release_date,
+            'Genre': genres,
+            'Track ID': track_id  # Voeg track ID toe voor audiofeatures
+        })
+    
+    # Haal audiofeatures op voor alle tracks in één API-call
+    audio_features = sp.audio_features(track_ids)
+    
+    # Voeg de audiofeatures toe aan de dataset
+    for i, features in enumerate(audio_features):
+        tracks_data[i]['Danceability'] = features['danceability']
+        tracks_data[i]['Energy'] = features['energy']
+        tracks_data[i]['Acousticness'] = features['acousticness']
+        tracks_data[i]['Tempo'] = features['tempo']
+
+    return pd.DataFrame(tracks_data)
+
+# Haal de data van de Global Top 50 playlist op
+playlist_id = '37i9dQZEVXbMDoHDwVN2tF'  # Global Top 50 playlist
+df_global = get_playlist_tracks(playlist_id)
+
+# Basis layout voor de app
+st.set_page_config(page_title="Spotify API", layout="centered")
+
+# Header en navigatieknoppen
+st.title("API Case 2 - Groep 3")
+
+# Sidebar met navigatieknoppen
+menu = st.sidebar.radio("Navigatie", ['Intro', 'Wereldwijd', 'Nederland'])
+
+# Wereldwijd pagina met de Global Top 50 data en plots
+if menu == 'Wereldwijd':
+    st.header("Wereldwijd: Global Top 50")
+
+    # Sliders voor minimale waarden van populariteit, danceability, en acousticness
+    min_popularity = st.slider('Minimale Populariteit', 0, 100, 50)
+    min_danceability = st.slider('Minimale Danceability', 0.0, 1.0, 0.5)
+    min_acousticness = st.slider('Minimale Acousticness', 0.0, 1.0, 0.5)
+
+    # Dropdown om te sorteren op genre
+    selected_genre = st.selectbox('Selecteer een Genre', options=df_global['Genre'].unique())
+
+    # Filter de data op basis van de minimale waarden en geselecteerd genre
+    df_filtered = df_global[
+        (df_global['Popularity'] >= min_popularity) & 
+        (df_global['Danceability'] >= min_danceability) & 
+        (df_global['Acousticness'] >= min_acousticness) & 
+        (df_global['Genre'] == selected_genre)
+    ]
+
+    # Tabel tonen met geselecteerde kolommen
+    st.dataframe(df_filtered[['Artist', 'Track', 'Popularity', 'Danceability', 'Acousticness', 'Genre']])
+
+    # Dropdown menu voor x-as keuze (audiofeatures en Popularity)
+    feature = st.selectbox(
+        'Kies een feature voor de x-as:',
+        ['Popularity', 'Danceability', 'Acousticness', 'Energy', 'Tempo']
+    )
+
+    # Sorteer de gefilterde dataframe op basis van de gekozen feature
+    df_sorted = df_filtered.sort_values(by=feature, ascending=False)
+
+    # Interactieve plot met de gekozen feature, gesorteerd
+    fig = px.bar(df_sorted, x=feature, y='Track', color=feature, 
+                 title=f'Tracks gefilterd op {feature}', orientation='h', color_continuous_scale='Blues')
+    fig.update_layout(
+        xaxis_title=feature,
+        yaxis_title='Track',
+        yaxis_title_standoff=1,
+        yaxis={'categoryorder':'total ascending'},
+        height=600,
+        margin=dict(l=150)
+    )
+    fig.update_traces(marker_line_color='black', marker_line_width=0.75)
+    st.plotly_chart(fig)
+
+# Placeholder voor de Nederland pagina
+if menu == 'Nederland':
+    st.write("Nederland data komt hier later.")
