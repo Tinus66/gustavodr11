@@ -5,4 +5,4 @@ pandas
 matplotlib
 altair
 seaborn
-
+spotipy
