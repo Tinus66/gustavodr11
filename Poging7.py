@@ -151,34 +151,46 @@ if menu == 'Wereldwijd':
     danceability_checkbox = st.checkbox("Danceability")
     acousticness_checkbox = st.checkbox("Acousticness")
  
-    # Stel de x-as in op basis van de geselecteerde checkbox en kies de kleur
+# Maak een lege lijst voor de geselecteerde features en kleuren
+    selected_features = []
+    selected_colors = []
+ 
+# Voeg de geselecteerde features toe aan de lijst
     if track_length_checkbox:
-        x_axis_feature = 'Duration (min)'
-        scatter_color = 'blue'  # Blauwe kleur voor track length
-    elif danceability_checkbox:
-        x_axis_feature = 'Danceability'
-        scatter_color = 'green'  # Groene kleur voor danceability
-    elif acousticness_checkbox:
-        x_axis_feature = 'Acousticness'
-        scatter_color = 'red'  # Rode kleur voor acousticness
+        selected_features.append('Duration (min)')
+        selected_colors.append('blue')  # Blauwe kleur voor track length
+ 
+    if danceability_checkbox:
+        selected_features.append('Danceability')
+        selected_colors.append('green')  # Groene kleur voor danceability
+ 
+    if acousticness_checkbox:
+        selected_features.append('Acousticness')
+        selected_colors.append('red')  # Rode kleur voor acousticness
+ 
+# Controleer of er geen checkboxes zijn aangevinkt
+    if not selected_features:
+        st.write("Selecteer minstens één feature om de data te zien.")
     else:
-        x_axis_feature = 'Duration (min)'  # Standaard als geen checkbox is geselecteerd
-        scatter_color = 'blue'  # Standaardkleur is blauw
+        # Maak een lege scatterplot
+        fig = px.scatter()
  
-    # Scatterplot met dynamische x-as en discrete kleur
-    fig = px.scatter(df_global, x=x_axis_feature, y='Popularity', 
-                     title=f'Scatterplot: Popularity vs {x_axis_feature}',
-                     color_discrete_sequence=[scatter_color])  # Kies de kleur afhankelijk van de checkbox
+    # Voeg elke geselecteerde feature toe aan de plot
+        for i, feature in enumerate(selected_features):
+            fig.add_scatter(x=df_global[feature], y=df_global['Popularity'], 
+                            mode='markers', name=feature, 
+                            marker=dict(color=selected_colors[i], size=10))
  
-    fig.update_layout(
-        xaxis_title=x_axis_feature,
-        yaxis_title='Popularity',
-        height=600,
-        margin=dict(l=150)
-    )
+        # Update de layout van de plot
+        fig.update_layout(
+            xaxis_title=', '.join(selected_features),
+            yaxis_title='Popularity',
+            height=600,
+            margin=dict(l=150)
+        )
  
-    # Toon de plot
-    st.plotly_chart(fig)
+        # Toon de plot
+        st.plotly_chart(fig)
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
     st.write("Nederland data komt hier later.")
