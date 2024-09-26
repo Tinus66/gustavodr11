@@ -146,6 +146,33 @@ if menu == 'Wereldwijd':
     else:
         st.write("Geen nummers gevonden met de gekozen filters.")
 
+    # Checkboxes voor de x-as opties
+    track_length_checkbox = st.checkbox("Track Length")
+    danceability_checkbox = st.checkbox("Danceability")
+    acousticness_checkbox = st.checkbox("Acousticness")
+ 
+    # Stel de x-as in op basis van de geselecteerde checkbox
+    if track_length_checkbox:
+        x_axis_feature = 'Duration (min)'
+    elif danceability_checkbox:
+        x_axis_feature = 'Danceability'
+    elif acousticness_checkbox:
+        x_axis_feature = 'Acousticness'
+    else:
+        x_axis_feature = 'Duration (min)'  # Standaard als geen checkbox is geselecteerd
+ 
+    # Scatterplot met dynamische x-as en populariteit op de y-as
+    fig = px.scatter(df_global, x=x_axis_feature, y='Popularity', 
+                     title=f'Scatterplot: Popularity vs {x_axis_feature}',
+                     color='Popularity', color_continuous_scale='Blues')
+ 
+    fig.update_layout(
+        xaxis_title=x_axis_feature,
+        yaxis_title='Popularity',
+        height=600,
+        margin=dict(l=150)
+    )
+    st.plotly_chart(fig)
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
     st.write("Nederland data komt hier later.")
