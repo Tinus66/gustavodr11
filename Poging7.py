@@ -99,9 +99,7 @@ if menu == 'Wereldwijd':
 
     # Toon de metrics
     col1, col2, col3 = st.columns(3)
-    col1.metric("Populairste Track", most_popular_track)
-    col2.metric("Meest Gestreamde Artiest", most_popular_artist)
-    col3.metric("Meest Voorkomende Genre", most_common_genre)
+
 
     
     # Metric voor populairste track met kleinere fontgrootte
