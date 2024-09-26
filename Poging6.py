@@ -103,6 +103,9 @@ if menu == 'Wereldwijd':
     col2.metric("Meest Gestreamde Artiest", most_popular_artist)
     col3.metric("Meest Voorkomende Genre", most_common_genre)
 
+    # Voeg 'All' toe aan de lijst van genres
+    genre_options = ['All'] + list(df_global['Genre'].unique())
+    
     # Dropdown menu voor genres
     selected_genre = st.selectbox("Kies een genre", df_global['Genre'].unique())
 
@@ -111,12 +114,12 @@ if menu == 'Wereldwijd':
     danceability_filter = st.slider('Filter op Danceability', 0.0, 1.0, (0.0, 1.0))
     acousticness_filter = st.slider('Filter op Acousticness', 0.0, 1.0, (0.0, 1.0))
 
-    # Filter de dataset op basis van de gekozen filters
+    # Filter de dataset: als 'All' is geselecteerd, toon alles, anders filter op genre
     df_filtered = df_global[
-        (df_global['Popularity'] >= popularity_filter[0]) & (df_global['Popularity'] <= popularity_filter[1]) &
-        (df_global['Danceability'] >= danceability_filter[0]) & (df_global['Danceability'] <= danceability_filter[1]) &
-        (df_global['Acousticness'] >= acousticness_filter[0]) & (df_global['Acousticness'] <= acousticness_filter[1]) &
-        (df_global['Genre'] == selected_genre)
+    (df_global['Popularity'] >= popularity_filter[0]) & (df_global['Popularity'] <= popularity_filter[1]) &
+    (df_global['Danceability'] >= danceability_filter[0]) & (df_global['Danceability'] <= danceability_filter[1]) &
+    (df_global['Acousticness'] >= acousticness_filter[0]) & 
+    ((df_global['Genre'] == selected_genre) if selected_genre != 'All' else True)
     ]
 
     # Sorteer de gefilterde dataset op populariteit en toon de top 5
