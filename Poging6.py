@@ -102,6 +102,8 @@ if menu == 'Wereldwijd':
     col1.metric("Populairste Track", most_popular_track)
     col2.metric("Meest Gestreamde Artiest", most_popular_artist)
     col3.metric("Meest Voorkomende Genre", most_common_genre)
+
+    
     # Metric voor populairste track met kleinere fontgrootte
     col1.markdown(f"<h3 style='font-size:18px;'>Populairste Track</h3><p style='font-size:14px;'>{most_popular_track}</p>", unsafe_allow_html=True)
     col2.markdown(f"<h3 style='font-size:18px;'>Meest Gestreamde Artiest</h3><p style='font-size:14px;'>{most_popular_artist}</p>", unsafe_allow_html=True)
