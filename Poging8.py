@@ -147,7 +147,7 @@ if menu == 'Wereldwijd':
 if menu == 'Nederland':
     # Laad het CSV-bestand voor de Nederlandse Top 50 playlist
 
-    df_netherlands = pd.read_csv('netherlands_top_50_playlist.csv')
+    df_netherlands = pd.read_csv('nederland_top_50_playlist.csv')
  
     # Bereken de top 5 tracks op basis van de populariteit
 
