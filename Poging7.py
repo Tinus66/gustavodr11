@@ -146,10 +146,17 @@ if menu == 'Wereldwijd':
     else:
         st.write("Geen nummers gevonden met de gekozen filters.")
 
-    # Checkboxes voor de x-as opties
+   # Checkbox voor Track Length
     track_length_checkbox = st.checkbox("Track Length")
-    danceability_checkbox = st.checkbox("Danceability")
-    acousticness_checkbox = st.checkbox("Acousticness")
+ 
+# Als Track Length is geselecteerd, disable de andere checkboxes
+    if track_length_checkbox:
+        danceability_checkbox = False
+        acousticness_checkbox = False
+    else:
+    # Checkboxes voor Danceability en Acousticness als Track Length niet is geselecteerd
+        danceability_checkbox = st.checkbox("Danceability")
+        acousticness_checkbox = st.checkbox("Acousticness")
  
 # Maak een lege lijst voor de geselecteerde features en kleuren
     selected_features = []
@@ -172,16 +179,16 @@ if menu == 'Wereldwijd':
     if not selected_features:
         st.write("Selecteer minstens één feature om de data te zien.")
     else:
-        # Maak een lege scatterplot
+    # Maak een lege scatterplot
         fig = px.scatter()
  
     # Voeg elke geselecteerde feature toe aan de plot
         for i, feature in enumerate(selected_features):
             fig.add_scatter(x=df_global[feature], y=df_global['Popularity'], 
                             mode='markers', name=feature, 
-                            marker=dict(color=selected_colors[i], size=10))
+                            marker=dict(color=selected_colors[i], size=8))  # Normale marker grootte
  
-        # Update de layout van de plot
+    # Update de layout van de plot
         fig.update_layout(
             xaxis_title=', '.join(selected_features),
             yaxis_title='Popularity',
@@ -189,7 +196,7 @@ if menu == 'Wereldwijd':
             margin=dict(l=150)
         )
  
-        # Toon de plot
+    # Toon de plot
         st.plotly_chart(fig)
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
