@@ -145,4 +145,4 @@ if menu == 'Wereldwijd':
 
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
-
+    st.write("ählle")
