@@ -170,7 +170,4 @@ if menu == 'Nederland':
 # Toon de Netherlands plot
 
     st.plotly_chart(fig_netherlands)
-
- 
-
  
