@@ -151,20 +151,24 @@ if menu == 'Wereldwijd':
     danceability_checkbox = st.checkbox("Danceability")
     acousticness_checkbox = st.checkbox("Acousticness")
  
-    # Stel de x-as in op basis van de geselecteerde checkbox
+    # Stel de x-as in op basis van de geselecteerde checkbox en kies de kleur
     if track_length_checkbox:
         x_axis_feature = 'Duration (min)'
+        scatter_color = 'blue'  # Blauwe kleur voor track length
     elif danceability_checkbox:
         x_axis_feature = 'Danceability'
+        scatter_color = 'green'  # Groene kleur voor danceability
     elif acousticness_checkbox:
         x_axis_feature = 'Acousticness'
+        scatter_color = 'red'  # Rode kleur voor acousticness
     else:
         x_axis_feature = 'Duration (min)'  # Standaard als geen checkbox is geselecteerd
+        scatter_color = 'blue'  # Standaardkleur is blauw
  
-    # Scatterplot met dynamische x-as en populariteit op de y-as
+    # Scatterplot met dynamische x-as en discrete kleur
     fig = px.scatter(df_global, x=x_axis_feature, y='Popularity', 
                      title=f'Scatterplot: Popularity vs {x_axis_feature}',
-                     color='Popularity', color_continuous_scale='Blues')
+                     color_discrete_sequence=[scatter_color])  # Kies de kleur afhankelijk van de checkbox
  
     fig.update_layout(
         xaxis_title=x_axis_feature,
@@ -172,6 +176,8 @@ if menu == 'Wereldwijd':
         height=600,
         margin=dict(l=150)
     )
+ 
+    # Toon de plot
     st.plotly_chart(fig)
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
