@@ -97,16 +97,10 @@ if menu == 'Wereldwijd':
     most_popular_artist = df_global['Artist'].value_counts().idxmax()  # Meest gestreamde artiest op basis van aantal tracks
     most_common_genre = df_global['Genre'].value_counts().idxmax()
 
-    # Toon de metrics
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Populairste Track", most_popular_track)
-    col2.metric("Meest Gestreamde Artiest", most_popular_artist)
-    col3.metric("Meest Voorkomende Genre", most_common_genre)
-
     # Metric voor populairste track met kleinere fontgrootte
-    col1.markdown(f"<h3 style='font-size:18px;'>Populairste Track</h3><p style='font-size:14px;'>{most_popular_track}</p>", unsafe_allow_html=True)
-    col2.markdown(f"<h3 style='font-size:18px;'>Meest Gestreamde Artiest</h3><p style='font-size:14px;'>{most_popular_artist}</p>", unsafe_allow_html=True)
-    col3.markdown(f"<h3 style='font-size:18px;'>Meest Voorkomende Genre</h3><p style='font-size:14px;'>{most_common_genre}</p>", unsafe_allow_html=True)
+    col1.markdown(f"<h3 style='font-size:20px;'>Populairste Track</h3><p style='font-size:14px;'>{most_popular_track}</p>", unsafe_allow_html=True)
+    col2.markdown(f"<h3 style='font-size:20px;'>Meest Gestreamde Artiest</h3><p style='font-size:14px;'>{most_popular_artist}</p>", unsafe_allow_html=True)
+    col3.markdown(f"<h3 style='font-size:20px;'>Meest Voorkomende Genre</h3><p style='font-size:14px;'>{most_common_genre}</p>", unsafe_allow_html=True)
     
     # Voeg 'All' toe aan de lijst van genres
     genre_options = ['All'] + list(df_global['Genre'].unique())
