@@ -186,7 +186,7 @@ if menu == 'Wereldwijd':
         for i, feature in enumerate(selected_features):
             fig.add_scatter(x=df_global[feature], y=df_global['Popularity'], 
                             mode='markers', name=feature, 
-                            marker=dict(color=selected_colors[i], size=8))  # Normale marker grootte
+                            marker=dict(color=selected_colors[i], size=6))  # Normale marker grootte
  
     # Update de layout van de plot
         fig.update_layout(
