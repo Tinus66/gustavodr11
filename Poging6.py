@@ -71,7 +71,7 @@ if menu == 'Intro':
     st.header("Spotify API")
 
     # Spotify logo
-    # st.image("Spotify_logo_with_text.svg.webp", width=300) 
+    st.image("Spotify_logo_with_text.svg.webp", width=300) 
     
     # Korte uitleg
     st.write("""
