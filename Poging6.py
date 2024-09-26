@@ -71,7 +71,7 @@ if menu == 'Intro':
     st.header("Spotify API")
 
     # Spotify logo
-    st.image("Spotify png.png", width=300) 
+    st.image("Spotify_logo_with_text.svg.webp", width=300) 
     
     # Korte uitleg
     st.write("""
@@ -105,9 +105,9 @@ if menu == 'Wereldwijd':
 
     # Voeg 'All' toe aan de lijst van genres
     genre_options = ['All'] + list(df_global['Genre'].unique())
-    
-    # Dropdown menu voor genres
-    selected_genre = st.selectbox("Kies een genre", df_global['Genre'].unique())
+
+    # Dropdown menu voor genres met 'All' optie
+    selected_genre = st.selectbox("Kies een genre", genre_options)
 
     # Sliders voor filtering
     popularity_filter = st.slider('Filter op Populariteit', 50, 100, (50, 100))
@@ -116,10 +116,10 @@ if menu == 'Wereldwijd':
 
     # Filter de dataset: als 'All' is geselecteerd, toon alles, anders filter op genre
     df_filtered = df_global[
-    (df_global['Popularity'] >= popularity_filter[0]) & (df_global['Popularity'] <= popularity_filter[1]) &
-    (df_global['Danceability'] >= danceability_filter[0]) & (df_global['Danceability'] <= danceability_filter[1]) &
-    (df_global['Acousticness'] >= acousticness_filter[0]) & 
-    ((df_global['Genre'] == selected_genre) if selected_genre != 'All' else True)
+        (df_global['Popularity'] >= popularity_filter[0]) & (df_global['Popularity'] <= popularity_filter[1]) &
+        (df_global['Danceability'] >= danceability_filter[0]) & (df_global['Danceability'] <= danceability_filter[1]) &
+        (df_global['Acousticness'] >= acousticness_filter[0]) & 
+        ((df_global['Genre'] == selected_genre) if selected_genre != 'All' else True)
     ]
 
     # Sorteer de gefilterde dataset op populariteit en toon de top 5
@@ -145,4 +145,3 @@ if menu == 'Wereldwijd':
 # Placeholder voor de Nederland pagina
 if menu == 'Nederland':
     st.write("Nederland data komt hier later.")
-
