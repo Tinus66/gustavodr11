@@ -5,8 +5,8 @@ import pandas as pd
 import plotly.express as px
 
 # Spotify API authenticatie
-CLIENT_ID = 'c93dfc8f76414f2287cddef836f37473'  # Vul je eigen client_id in
-CLIENT_SECRET = 'f6d542101e83409dae8c94ae3b43b7fb'  # Vul je eigen client_secret in
+CLIENT_ID = ''  # Vul je eigen client_id in
+CLIENT_SECRET = ''  # Vul je eigen client_secret in
 
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
 
